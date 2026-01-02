@@ -9,9 +9,13 @@ import com.onlinestore.sales_service.feign.IShoppingCartAPI;
 import com.onlinestore.sales_service.feign.IUserAPI;
 import com.onlinestore.sales_service.model.Sale;
 import com.onlinestore.sales_service.repository.ISaleRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.naming.ServiceUnavailableException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +39,7 @@ public class SaleService implements ISaleService {
     public String createSale(SaleDTO saleDTO) {
 
         //I check if the shopping cart belongs to this user
-        boolean ok = this.verifyOwnership( saleDTO.getId_user(), saleDTO.getId_shopping_cart());
+        boolean ok = this.verifyOwnership( saleDTO.getId_user(), saleDTO.getId_shopping_cart() );
 
         //I need to verify if the shopping cart & the user exists because it's crucial
         saleDTO = this.verifyIfUserExists(saleDTO);
@@ -56,7 +60,8 @@ public class SaleService implements ISaleService {
         return "The user or the shopping cart does not exist";
     }
 
-    //circuit breaker;
+    @CircuitBreaker( name = "shopping-carts-service", fallbackMethod = "fallbackVerifyIfShoppingCartExists")
+    @Retry( name = "shopping-carts-service")
     private SaleDTO verifyIfShoppingCartExists(SaleDTO saleDTO) {
         //find
         ShoppingCartDTO shoppingCartDTO = iShoppingCartAPI.findById( saleDTO.getId_shopping_cart() );
@@ -69,7 +74,12 @@ public class SaleService implements ISaleService {
         return saleDTO;
     }
 
-    //circuit breaker
+    public SaleDTO fallbackVerifyIfShoppingCartExists(Throwable throwable){
+        return new SaleDTO(111111L,111111L,111111L, null,null);
+    }
+
+    @CircuitBreaker(name="users-service", fallbackMethod = "fallbackVerifyIfUserExist")
+    @Retry(name="users-service")
     private SaleDTO verifyIfUserExists(SaleDTO saleDTO) {
         //find
         UserDTO userDTO = iUserAPI.findByUserId( saleDTO.getId_user() );
@@ -82,7 +92,13 @@ public class SaleService implements ISaleService {
         return saleDTO;
     }
 
-    //circuit breaker
+    public SaleDTO fallbackVerifyIfUserExist(Throwable throwable) {
+        return new SaleDTO(9999999L,999999L,999999L, null,null);
+    }
+
+
+    @CircuitBreaker(name="sales-details-service", fallbackMethod = "fallbackCreateSaleDetail")
+    @Retry(name="sales-details-service")
     private void createSaleDetail(Sale sale) {
         SaleDetailDTO saleDetailDTO = new SaleDetailDTO();
         saleDetailDTO.setId_sale(sale.getId_sale());
@@ -91,6 +107,10 @@ public class SaleService implements ISaleService {
         saleDetailDTO.setDate(sale.getDate());
         saleDetailDTO.setTotal_price(sale.getTotal_price());
         iSaleDetailAPI.createSaleDetail(saleDetailDTO);
+    }
+
+    public void fallbackCreateSaleDetail(Throwable throwable) throws ServiceUnavailableException {
+        throw new ServiceUnavailableException("sales-details-service unavailable. method: createSaleDetail");
     }
 
     private boolean verifyOwnership(Long user_id, Long shopping_cart_id) {
