@@ -19,6 +19,5 @@ public class SaleDTO {
     private Long id_shopping_cart;
 
     private BigDecimal total_price;
-
-    private LocalDate  date;
+    private LocalDate date;
 }

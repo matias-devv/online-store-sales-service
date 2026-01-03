@@ -1,4 +1,4 @@
-package com.onlinestore.sales_service.service;
+package com.onlinestore.sales_service.service.interfaces;
 
 import com.onlinestore.sales_service.dto.SaleDTO;
 
