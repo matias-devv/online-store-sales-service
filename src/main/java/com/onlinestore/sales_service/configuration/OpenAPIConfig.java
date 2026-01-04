@@ -1,6 +1,7 @@
 package com.onlinestore.sales_service.configuration;
 
 
+import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
@@ -29,13 +30,13 @@ public class OpenAPIConfig {
                         .license(new License()
                                 .name("Apache 2.0")
                                 .url("https://www.apache.org/licenses/LICENSE-2.0.html")))
+                .externalDocs(new ExternalDocumentation()
+                        .description("Git Hub Documentation")
+                        .url("https://github.com/matias-devv/online-store-sales-service"))
                 .servers(List.of(
                         new Server()
                                 .url("http://localhost:8086")
-                                .description("Development server"),
-                        new Server()
-                                .url("http://localhost:8080/sales-service")
-                                .description("API Gateway")
+                                .description("Development server")
                 ));
     }
 }
