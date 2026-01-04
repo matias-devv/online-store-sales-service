@@ -121,11 +121,6 @@ public class SaleService implements ISaleService {
 
         List<Long> idsShoppingCartsFromUser = userDTO.getIds_shopping_cart();
 
-        System.out.println("The ids from the user are null? " + (idsShoppingCartsFromUser == null));
-        System.out.println("Shopping cart id " + shoppingCartDTO.getId_shopping_cart() );
-        System.out.println("Shopping cart total price " + shoppingCartDTO.getTotal_price() );
-        System.out.println("Shopping cart id " + shoppingCartDTO.getId_user() );
-
         if ( idsShoppingCartsFromUser == null ) {
             return false;
         }
