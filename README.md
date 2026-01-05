@@ -68,8 +68,10 @@ This design guarantees data consistency and historical accuracy, which is especi
 
 ## 🧩 Sale & SaleDetail Model
 **Sale**
--Represents the main business transaction linked to user and shopping cart.
+- Represents the main business transaction linked to user and shopping cart.
+
 **SaleDetail**
+  
 - Internal entity (same repository and database) that acts as a snapshot of the transaction. Intentionally duplicates product data to avoid future dependency on external services.
 
 This is a deliberate design decision.
