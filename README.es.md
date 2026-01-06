@@ -158,6 +158,8 @@ Asegúrate de que las siguientes bases de datos existan antes de iniciar la apli
   
 - shopping_carts_service
 
+<br>
+
 ## ▶️ Ejecutar la Aplicación
 Desde el directorio raíz del proyecto:
 
@@ -208,12 +210,17 @@ Todos los endpoints, esquemas de petición/respuesta y ejemplos son generados au
 
 ## 📚 Lo Que Este Servicio Demuestra
 
-- Practical application of MVC in microservices
-- Business orchestration across multiple services
-- Clear separation of responsibilities
-- Snapshot-based consistency model
-- Resilient inter-service communication
-- Clean API documentation
+- Aplicación práctica del patrón MVC en microservicios
+
+- Orquestación de negocio entre múltiples servicios
+
+- Separación clara de responsabilidades
+
+- Modelo de consistencia basado en snapshots
+
+- Comunicación resiliente entre servicios
+
+- Documentación de API limpia y clara
 
 A pesar de ser conceptualmente simple, este servicio consolida principios fundamentales de backend que escalan correctamente en sistemas distribuidos.
 
@@ -222,9 +229,13 @@ A pesar de ser conceptualmente simple, este servicio consolida principios fundam
 ## 🚀 Posibles Mejoras
 
 - Manejo global de excepciones
+  
 - Autenticación y autorización
+
 - Integración de gestión de stock
+
 - Pruebas unitarias y de integración
+
 - Mocks de Feign para pruebas aisladas
 
 <br>
@@ -232,4 +243,5 @@ A pesar de ser conceptualmente simple, este servicio consolida principios fundam
 ## 🔑 Posicionamiento Técnico Final
 
 - El Servicio de Ventas es el Servicio de Negocio Central del sistema.
+
 - Posee la lógica del dominio de ventas y coordina servicios externos sin violar los límites del dominio.
