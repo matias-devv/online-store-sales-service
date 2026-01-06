@@ -118,9 +118,13 @@ This avoids silent failures and prevents inconsistent sales from being created.
 This service depends on the following microservices, which must be running before starting sales-service:
 
 - **Eureka Server** - http://localhost:8761
-- **API Gateway** - Routes all external requests
+  
+- **API Gateway** - Routes all external requests ( optional )
+  
 - **Users Service** (users-service) - Used to validate user existence and ownership
+  
 - **Products Service** (products-service) - Used to retrieve product information
+  
 - **Shopping Carts Service** (carts-service) - Used to validate shopping carts and calculate total price
 
 
