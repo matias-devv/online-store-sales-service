@@ -86,9 +86,11 @@ Esta es una decisión de diseño deliberada.
 ## 🔗 Comunicación entre Servicios
 Toda la comunicación con servicios externos se realiza a través de **OpenFeign**:
 
-- Servicio de Usuarios
-- Servicio de Carritos de Compras
-- Servicio de Productos
+- ```users-service```
+  
+- ```shopping-carts-service```
+  
+- ```products-service```
 
 Sin RestTemplate, sin WebClient. Los contratos son explícitos y fuertemente tipados.
 
@@ -97,13 +99,17 @@ Sin RestTemplate, sin WebClient. Los contratos son explícitos y fuertemente tip
 ## 🛡 Resiliencia y Tolerancia a Fallos
 Este servicio usa **Resilience4j** con:
 
+
 - CircuitBreaker
+
 - Estrategia de Retry
 
 Enfoque:
 
 - Fallo rápido para dependencias críticas (Productos, Carritos de Compras)
+
 - Excepciones explícitas cuando un servicio dependiente no está disponible
+
 - Comportamiento de fallback controlado durante los pasos de validación
 
 Esto evita fallos silenciosos y previene que se creen ventas inconsistentes.
@@ -115,7 +121,9 @@ Esto evita fallos silenciosos y previene que se creen ventas inconsistentes.
 ### ✅ Prerequisitos
 
 - Java 17
+  
 - Maven
+  
 - MySQL
 
 <br> 
@@ -126,9 +134,13 @@ Esto evita fallos silenciosos y previene que se creen ventas inconsistentes.
 Este servicio depende de los siguientes microservicios, que deben estar ejecutándose antes de iniciar sales-service:
 
 - **Servidor Eureka** - http://localhost:8761
-- **API Gateway** - Enruta todas las peticiones externas
+  
+- **API Gateway** - Enruta todas las peticiones externas ( opcional )
+  
 - **Servicio de Usuarios** (users-service) - Usado para validar la existencia del usuario y propiedad
+  
 - **Servicio de Productos** (products-service) - Usado para recuperar información de productos
+  
 - **Servicio de Carritos de Compras** (carts-service) - Usado para validar carritos de compras y calcular el precio total
 
 ⚠️ Si alguno de estos servicios no está disponible, se activarán los mecanismos de resiliencia (Circuit Breaker + Retry).
@@ -139,8 +151,11 @@ Este servicio depende de los siguientes microservicios, que deben estar ejecutá
 Asegúrate de que las siguientes bases de datos existan antes de iniciar la aplicación:
 
 - sales_service
+  
 - products_service
+  
 - users_service
+  
 - shopping_carts_service
 
 ## ▶️ Ejecutar la Aplicación
